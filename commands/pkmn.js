@@ -27,8 +27,12 @@ module.exports.run = async (client, message, args) => {
             moves = p.learnset;
             type = p.types;
             abilities = p.abilities;
-            
-            message.channel.send(`Information for ${p.names.en}: \r\n\r\nType(s): ${type}\r\nAbilities: ${JSON.stringify(abilities.name)}\r\nDescription: ${JSON.stringify(p.pokedex_entries.Y.en)}`);
+            let parsedAbilities;
+            for (i in abilities) {
+                let object = abilities[i];
+                parsedAbilities = object.name;
+            }
+            message.channel.send(`Information for ${p.names.en}: \r\n\r\nType(s): ${type}\r\nAbilities: ${parsedAbilities}\r\nDescription: ${JSON.stringify(p.pokedex_entries.Y.en)}`);
         })
     } catch (e) {
         message.channel.send(e.stack);
