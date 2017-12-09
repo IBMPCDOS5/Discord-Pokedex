@@ -1,10 +1,15 @@
 module.exports.run = async (client, message, args) => {
-    const pkmn = require('pkmn');
     const Discord = require('discord.js');
-    const Dexter = new pkmn();
+    const Dexter = require('oakdex-pokedex');
 
     const config = require('../config.json');
     let embed;
+
+    let moves;
+    let type;
+    let name;
+    let sprite;
+
     if (!args[0]) {
         embed = new Discord.RichEmbed()
             .setColor("BLUE")
@@ -14,40 +19,27 @@ module.exports.run = async (client, message, args) => {
             .setTimestamp()
         message.channel.send({ embed });
     }
-    Dexter.get('pokemon', capitalizeFirstLetter(args[0])).then(pokemon => {
-        message.channel.send(pokemon.pokemon);
-    }).catch(err => {
-        message.channel.send(`There appears to be an issue; either the Pokémon could not be found or there was an issue connecting to the API. Would you like to view the message? Reply with \`yes\` or \`no\`.`);
-        let filter = m => m.author == message.author;
-        message.channel.awaitMessages(filter, {
-            max: 1,
-            time: 15000,
-            errors: ['time']
-        }).then(collected => {
-            switch (collected.first().content.toLowerCase()) {
-                default:
-                    message.channel.send("Invalid option. Cancelling action.")
-                    break;
-                case "yes":
-                    message.channel.send(`Here's the error details: \r\n\`\`\`${err.stack}\`\`\``);
-                    break;
-                case "no":
-                    message.channel.send("Okay! I won't do it.");
-                    break;
-                case "n":
-                    message.channel.send("Okay! I won't do it.");
-                    break;
-                case "y":
-                    message.channel.send(`Here's the error details: \r\n\`\`\`${err.stack}\`\`\``);
-                    break;
-            }
-        }).catch(() => {
-            message.channel.send("No reason was specified. Cancelling action.");
+
+    try {
+        Dexter.findPokemon(capitalizeFirstLetter(args[0]), function (p) {
+            name = p.names.en;
+            moves = p.moves.en;
+            type = p.types.en;
+            embed = new Discord.RichEmbed()
+                .setColor("BLUE")
+                .setTitle(`Information for ${name}`)
+                .addField("Type", type)
+                .addField("Moves", moves)
+                .setFooter(config.name + " v" + config.version)
+            message.channel.send({ embed });
         })
-    })
+    } catch (e) {
+        message.channel.send(e.stack);
+    }
+
     function capitalizeFirstLetter(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
-}
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    }
 }
 module.exports.help = {
     name: 'pkmn',
