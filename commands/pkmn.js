@@ -28,7 +28,7 @@ module.exports.run = async (client, message, args) => {
             type = p.types;
             abilities = p.abilities;
             for (const [key, value] in p.abilities) {
-                abilities += abilities[value].name;
+                abilities += p.abilities[value];
             }
             message.channel.send(`Information for ${p.names.en}: \r\n\r\nType(s): ${type}\r\nAbilities: ${JSON.stringify(abilities)}\r\nDescription: ${JSON.stringify(p.pokedex_entries.Y.en)}`);
         })
