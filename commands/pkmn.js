@@ -1,6 +1,7 @@
 module.exports.run = async (client, message, args) => {
-    const Dexter = require('oakdex-pokedex');
+    const pkmn = require('pkmn');
     const Discord = require('discord.js');
+    const Dexter = new pkmn();
 
     const config = require('../config.json');
     let embed;
@@ -13,9 +14,24 @@ module.exports.run = async (client, message, args) => {
             .setTimestamp()
         message.channel.send({ embed });
     }
-    Dexter.findPokemon(args[0], function (p, err) {
-        if (err) return message.channel.send(`There was an issue finding your specified Pokémon. Remember: names are case senstive!`);
-        message.channel.send(`Testing the thing. Here's the name: ${p.names.en}.`)
+    Dexter.get('pokemon', args[0].toLowerCase).then(pokemon => {
+        message.channel.send(pokemon.pokemon);
+    }).catch(err => {
+        message.channel.send(`There appears to be an issue; either the Pokémon could not be found or there was an issue connecting to the API. Would you like to view the message? Reply with \`yes\` or \`no\`.`);
+        let filter = m => m.author == message.author;
+        message.channel.awaitMessages(filter, {
+            time: 15000,
+            max: 1,
+            errors: ['time']
+        }).then(collection => {
+            if (collection.first().contents.toLowerCase() == "yes" || "y") {
+                message.channel.send(`Here's the error information: \r\n\`\`\`${err.stack}\`\`\``);
+            } else {
+                return message.channel.send("Okay! I won't show you the information.");
+            }
+        }).catch({
+            message.channel.send("There was no information that was given in the alotted amount of time.");
+        })
     })
 }
 module.exports.help = {
