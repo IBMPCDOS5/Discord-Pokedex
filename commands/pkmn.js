@@ -30,7 +30,7 @@ module.exports.run = async (client, message, args) => {
             let parsedAbilities;
             for (i in abilities) {
                 let object = abilities[i];
-                parsedAbilities = object.name;
+                parsedAbilities = object.name + object.hidden;
             }
             message.channel.send(`Information for ${p.names.en}: \r\n\r\nType(s): ${type}\r\nAbilities: ${parsedAbilities}\r\nDescription: ${JSON.stringify(p.pokedex_entries.Y.en)}`);
         })
