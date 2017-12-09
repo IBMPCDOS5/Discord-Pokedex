@@ -14,7 +14,7 @@ module.exports.run = async (client, message, args) => {
             .setTimestamp()
         message.channel.send({ embed });
     }
-    Dexter.get('pokemon', args[0]).then(pokemon => {
+    Dexter.get('pokemon', capitalizeFirstLetter(args[0])).then(pokemon => {
         message.channel.send(pokemon.pokemon);
     }).catch(err => {
         message.channel.send(`There appears to be an issue; either the Pokémon could not be found or there was an issue connecting to the API. Would you like to view the message? Reply with \`yes\` or \`no\`.`);
@@ -45,6 +45,9 @@ module.exports.run = async (client, message, args) => {
             message.channel.send("No reason was specified. Cancelling action.");
         })
     })
+    function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
 }
 module.exports.help = {
     name: 'pkmn',
