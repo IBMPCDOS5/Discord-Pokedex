@@ -13,10 +13,14 @@ module.exports.run = async (client, message, args) => {
             .setTimestamp()
         message.channel.send({ embed });
     }
-    Dexter.findPokemon(args[0], function(p, err) {
-        if (err) message.channel.send(`\`\`\`${err.stack}\`\`\``);
-        message.channel.send(`Testing the thing. Here's the name: ${p.names.en}.`)
-    })
+    try {
+        Dexter.findPokemon(args[0].toLowerCase(), function (p) {
+            message.channel.send(`Testing the thing. Here's the name: ${p.names.en}.`)
+        })
+    } catch (e) {
+        message.channel.send(e);
+    }
+    
 }
 module.exports.help = {
     name: 'pkmn',
