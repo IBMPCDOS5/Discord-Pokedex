@@ -9,6 +9,7 @@ module.exports.run = async (client, message, args) => {
     let type;
     let name;
     let sprite;
+    let abilities;
 
     if (!args[0]) {
         embed = new Discord.RichEmbed()
@@ -23,13 +24,16 @@ module.exports.run = async (client, message, args) => {
     try {
         Dexter.findPokemon(capitalizeFirstLetter(args[0]), function (p) {
             name = p.names.en;
-            moves = p.moves.en;
-            type = p.types.en;
+            moves = p.learnset;
+            type = p.types;
+            abilities = p.abilities;
             embed = new Discord.RichEmbed()
                 .setColor("BLUE")
                 .setTitle(`Information for ${name}`)
                 .addField("Type", type)
                 .addField("Moves", moves)
+                .addField("Moveset", moves)
+                .addField("Abilities", abilities)
                 .setFooter(config.name + " v" + config.version)
             message.channel.send({ embed });
         })
@@ -40,6 +44,7 @@ module.exports.run = async (client, message, args) => {
     function capitalizeFirstLetter(string) {
         return string.charAt(0).toUpperCase() + string.slice(1);
     }
+    
 }
 module.exports.help = {
     name: 'pkmn',
