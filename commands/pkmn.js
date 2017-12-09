@@ -27,15 +27,7 @@ module.exports.run = async (client, message, args) => {
             moves = p.learnset;
             type = p.types;
             abilities = p.abilities;
-            embed = new Discord.RichEmbed()
-                .setColor("BLUE")
-                .setTitle(`Information for ${name}`)
-                .addField("Type", type)
-                .addField("Moves", moves)
-                .addField("Moveset", moves)
-                .addField("Abilities", abilities)
-                .setFooter(config.name + " v" + config.version)
-            message.channel.send({ embed });
+            message.channel.send(`Information for ${p.names.en}: \r\n\r\n Type(s): ${types}\r\nAbilities: ${abilities}\r\nLearnset: ${learnset}`);
         })
     } catch (e) {
         message.channel.send(e.stack);
