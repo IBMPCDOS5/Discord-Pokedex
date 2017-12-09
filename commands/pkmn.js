@@ -27,8 +27,10 @@ module.exports.run = async (client, message, args) => {
             moves = p.learnset;
             type = p.types;
             abilities = p.abilities;
-            
-            message.channel.send(`Information for ${p.names.en}: \r\n\r\n Type(s): ${type}\r\nAbilities: ${JSON.stringify(abilities)}\r\nDescription: ${JSON.stringify(p.pokedex_entries.Y)}`);
+            for (const [key, value] in p.abilities) {
+                abilities += abilities[value].name;
+            }
+            message.channel.send(`Information for ${p.names.en}: \r\n\r\nType(s): ${type}\r\nAbilities: ${JSON.stringify(abilities)}\r\nDescription: ${JSON.stringify(p.pokedex_entries.Y.en)}`);
         })
     } catch (e) {
         message.channel.send(e.stack);
@@ -37,7 +39,7 @@ module.exports.run = async (client, message, args) => {
     function capitalizeFirstLetter(string) {
         return string.charAt(0).toUpperCase() + string.slice(1);
     }
-    
+
 }
 module.exports.help = {
     name: 'pkmn',
