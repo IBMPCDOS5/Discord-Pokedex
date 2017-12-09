@@ -20,17 +20,29 @@ module.exports.run = async (client, message, args) => {
         message.channel.send(`There appears to be an issue; either the Pokémon could not be found or there was an issue connecting to the API. Would you like to view the message? Reply with \`yes\` or \`no\`.`);
         let filter = m => m.author == message.author;
         message.channel.awaitMessages(filter, {
-            time: 15000,
             max: 1,
+            time: 15000,
             errors: ['time']
-        }).then(collection => {
-            if (collection.first().contents.toLowerCase() == "yes" || "y") {
-                message.channel.send(`Here's the error information: \r\n\`\`\`${err.stack}\`\`\``);
-            } else {
-                return message.channel.send("Okay! I won't show you the information.");
+        }).then(collected => {
+            switch (collected.first().content.toLowerCase()) {
+                default:
+                    message.channel.send("Invalid option. Cancelling action.")
+                    break;
+                case "yes":
+                    message.channel.send(`Here's the error details: \r\n\`\`\`${err.stack}\`\`\``);
+                    break;
+                case "no":
+                    message.channel.send("Okay! I won't do it.");
+                    break;
+                case "n":
+                    message.channel.send("Okay! I won't do it.");
+                    break;
+                case "y":
+                    message.channel.send(`Here's the error details: \r\n\`\`\`${err.stack}\`\`\``);
+                    break;
             }
-        }).catch(()=>{
-            message.channel.send("There was no information that was given in the alotted amount of time.");
+        }).catch(() => {
+            message.channel.send("No reason was specified. Cancelling action.");
         })
     })
 }
