@@ -29,7 +29,7 @@ module.exports.run = async (client, message, args) => {
             } else {
                 return message.channel.send("Okay! I won't show you the information.");
             }
-        }).catch({
+        }).catch(()=>{
             message.channel.send("There was no information that was given in the alotted amount of time.");
         })
     })
