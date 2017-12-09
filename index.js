@@ -40,6 +40,8 @@ client.on('message', async message => {
     let cmd = client.commands.get(command.slice(prefix.length));
     if (cmd) {
         cmd.run(client, message, args);
+    } else {
+        message.channel.send(`Oh, \`${command}\` doesn't appear to be a valid command in my database. Try \`${prefix}help\` for a list of commands!`)
     }
 });
-client.login("Mzg4MTA0ODMwMjE3ODc5NTU0.DQoKUg.PuisrX3IukMFhg2U8mVfGIF3gfs");
+client.login(process.env.TOKEN);
