@@ -5,7 +5,7 @@ module.exports.run = async (client, message, args) => {
     const config = require('../config.json');
     let embed;
 
-    const filter = m => m.filter == message.author;
+    const filter = m => m.author == message.author;
 
     let moves;
     let type;
