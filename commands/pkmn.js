@@ -5,7 +5,7 @@ module.exports.run = async (client, message, args) => {
     const config = require('../config.json');
     let embed;
 
-    const filter = m => m.author == message.author;
+    const filter = m => m.author.id == message.author.id;
 
     let moves;
     let type;
@@ -52,57 +52,45 @@ module.exports.run = async (client, message, args) => {
             message.channel.awaitMessages(filter, {
                 max: 1,
                 time: 15000,
-                
+
                 errors: ['time']
             }).then(collected => {
-                switch (collected.first().content.toLowerCase()) {
-                    default:
-                        message.channel.send("Invalid option.");
-                        break;
-                    case "yes":
-                        return showInGerman(p);
-                        break;
-                    case "ja":
-                        return showInGerman(p);
-                        break;
-                    case "no":
-                        message.channel.send("Okay, I won't show in German.");
-                        break;
-                    case "nein":
-                        message.channel.send("Okay, ich werde keine Informationen auf Deutsch zeigen.");
-                }
+                if (collected.first().content === "yes".toLowerCase() || collected.first().content === "ja".toLowerCase()) return showInGerman(p);
+                if (collected.first().content === "no".toLowerCase()) return message.channel.send("Okay, I won't show in German.");
+                if (collected.first().content === "nein".toLowerCase()) return message.channel.send("Okay, ich werde keine Informationen auf Deutsch zeigen.");
+                
             }).catch(() => {
                 message.channel.send("No information was given within the alotted amount of time.");
             })
-        })
-    } catch (e) {
-        embed = new Discord.RichEmbed()
-            .setColor("BLUE")
-            .setTitle("Information for... err... well...")
-            .setDescription(`I couldn't find anything under the name of ${capitalizeFirstLetter(args[0])}. Maybe you misspelt something?`)
-            .setFooter(`${config.name} v${config.version}`)
-            .setTimestamp()
-        message.channel.send({ embed });
-    }
+    })
+} catch (e) {
+    embed = new Discord.RichEmbed()
+        .setColor("BLUE")
+        .setTitle("Information for... err... well...")
+        .setDescription(`I couldn't find anything under the name of ${capitalizeFirstLetter(args[0])}. Maybe you misspelt something?`)
+        .setFooter(`${config.name} v${config.version}`)
+        .setTimestamp()
+    message.channel.send({ embed });
+}
 
-    function capitalizeFirstLetter(string) {
-        return string.charAt(0).toUpperCase() + string.slice(1);
-    }
-    function showInGerman(p) {
-        embed = new Discord.RichEmbed()
-            .setTitle(`Information für ${p.names.de}:`)
-            .setDescription("Hinweis: Diese Information ist nur bis Gen 6 korrekt (Pokemon X / Y).")
-            .addField(`Art`, type)
-            .addField(`Fähigkeiten`, parsedAbilities)
-            .addField(`Höhe`, p.height_eu)
-            .addField(`Weight`, p.weight_eu)
-            .addField("Geschlechterverhältnis", `${p.gender_ratios.male}% M / ${JSON.stringify(p.gender_ratios.female)}% F.`)
-            .addField('Dex-Nummer', p.national_id)
-            .setColor('BLUE')
-            .setFooter(`${config.name} v${config.version}`)
-            .setTimestamp()
-        message.channel.send({ embed });
-    }
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+function showInGerman(p) {
+    embed = new Discord.RichEmbed()
+        .setTitle(`Information für ${p.names.de}:`)
+        .setDescription("Hinweis: Diese Information ist nur bis Gen 6 korrekt (Pokemon X / Y).")
+        .addField(`Art`, type)
+        .addField(`Fähigkeiten`, parsedAbilities)
+        .addField(`Höhe`, p.height_eu)
+        .addField(`Weight`, p.weight_eu)
+        .addField("Geschlechterverhältnis", `${p.gender_ratios.male}% M / ${JSON.stringify(p.gender_ratios.female)}% F.`)
+        .addField('Dex-Nummer', p.national_id)
+        .setColor('BLUE')
+        .setFooter(`${config.name} v${config.version}`)
+        .setTimestamp()
+    message.channel.send({ embed });
+}
 }
 module.exports.help = {
     name: 'pkmn',
