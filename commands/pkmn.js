@@ -40,8 +40,8 @@ module.exports.run = async (client, message, args) => {
                 .setDescription("Note: This information is only accurate up to Generation 6 (Pokémon X/Y).")
                 .addField(`Type`, type)
                 .addField(`Abilities`, parsedAbilities)
-                .addField(`Height`, `Imperial: ${JSON.stringify(p.height_us)} ft. (${JSON.stringify(p.height_eu)})`)
-                .addField(`Weight`, `${p.weight_us} ft. (${p.weight_eu})`)
+                .addField(`Height`, `${p.height_us} ft. (${p.height_eu})`)
+                .addField(`Weight`, `${p.weight_us} (${p.weight_eu})`)
                 .addField("Gender Ratio", `${JSON.stringify(p.gender_ratios.male)}% M / ${JSON.stringify(p.gender_ratios.female)}% F.`)
                 .addField('National ID', p.national_id)
                 .setColor('BLUE')
@@ -50,8 +50,9 @@ module.exports.run = async (client, message, args) => {
             message.channel.send({ embed });
             message.channel.send(`Would you like to see the information in German? Reply with \`yes\` or \`no\`. (Möchten Sie die Informationen auf Deutsch sehen? Antworte mit \`Ja\` oder \`Nein\`.)`);
             message.channel.awaitMessages(filter, {
-                time: 15000,
                 max: 1,
+                time: 15000,
+                
                 errors: ['time']
             }).then(collected => {
                 switch (collected.first().content.toLowerCase()) {
