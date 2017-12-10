@@ -60,7 +60,7 @@ module.exports.run = async (client, message, args) => {
                 if (collected.first().content === "nein".toLowerCase()) return message.channel.send("Okay, ich werde keine Informationen auf Deutsch zeigen.");
                 
             }).catch(() => {
-                message.channel.send("No information was given within the alotted amount of time.");
+                message.channel.send("No information was given within the allotted amount of time.");
             })
     })
 } catch (e) {
