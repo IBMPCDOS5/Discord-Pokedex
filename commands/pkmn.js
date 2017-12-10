@@ -55,7 +55,7 @@ module.exports.run = async (client, message, args) => {
 
                 errors: ['time']
             }).then(collected => {
-                if (collected.first().content === "yes".toLowerCase() || collected.first().content === "ja".toLowerCase()) return showInGerman(p);
+                if (collected.first().content === "yes".toLowerCase() || collected.first().content === "ja".toLowerCase()) return showInGerman(p, message);
                 if (collected.first().content === "no".toLowerCase()) return message.channel.send("Okay, I won't show in German.");
                 if (collected.first().content === "nein".toLowerCase()) return message.channel.send("Okay, ich werde keine Informationen auf Deutsch zeigen.");
                 
@@ -76,7 +76,7 @@ module.exports.run = async (client, message, args) => {
 function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
-function showInGerman(p) {
+function showInGerman(p, message) {
     embed = new Discord.RichEmbed()
         .setTitle(`Information für ${p.names.de}:`)
         .setDescription("Hinweis: Diese Information ist nur bis Gen 6 korrekt (Pokemon X / Y).")
