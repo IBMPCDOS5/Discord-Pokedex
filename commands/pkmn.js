@@ -55,7 +55,7 @@ module.exports.run = async (client, message, args) => {
 
                 errors: ['time']
             }).then(collected => {
-                if (collected.first().content === "yes".toLowerCase() || collected.first().content === "ja".toLowerCase()) return showInGerman(p, message);
+                if (collected[0].first().content === "yes".toLowerCase() || collected[0].first().content === "ja".toLowerCase()) return showInGerman(p, message);
                 if (collected.first().content === "no".toLowerCase()) return message.channel.send("Okay, I won't show in German.");
                 if (collected.first().content === "nein".toLowerCase()) return message.channel.send("Okay, ich werde keine Informationen auf Deutsch zeigen.");
                 
