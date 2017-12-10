@@ -43,7 +43,7 @@ module.exports.run = async (client, message, args) => {
                 .addField(`Height`, `Imperial: ${JSON.stringify(p.height_us)} ft. (${JSON.stringify(p.height_eu)})`)
                 .addField(`Weight`, `${JSON.stringify(p.weight_us)} (${JSON.stringify(p.weight_eu)})`)
                 .addField("Gender Ratio", `${JSON.stringify(p.gender_ratios.male)}% M / ${JSON.stringify(p.gender_ratios.female)}`)
-                .addField('National ID', p.national.id)
+                .addField('National ID', p.national_id)
                 .setColor('BLUE')
                 .setFooter(`${config.name} v${config.version}`)
                 .setTimestamp()
