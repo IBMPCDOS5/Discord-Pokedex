@@ -60,16 +60,16 @@ module.exports.run = async (client, message, args) => {
                         message.channel.send("Invalid option.");
                         break;
                     case "yes":
-                        showInGerman(p);
+                        return showInGerman(p);
                         break;
                     case "ja":
-                        showInGerman(p);
+                        return showInGerman(p);
                         break;
                     case "no":
                         message.channel.send("Okay, I won't show in German.");
                         break;
                     case "nein":
-                        message.channel.send("Okay, ich werde nicht auf Deutsch zeigen.");
+                        message.channel.send("Okay, ich werde keine Informationen auf Deutsch zeigen.");
                 }
             }).catch(() => {
                 message.channel.send("No information was given within the alotted amount of time.");
