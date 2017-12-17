@@ -4,6 +4,7 @@ module.exports.run = async (client, message, args) => {
 
     const config = require('../config.json');
     let embed;
+    let arg = args[0];
 
     const filter = m => m.author.id == message.author.id;
 
@@ -25,7 +26,7 @@ module.exports.run = async (client, message, args) => {
     }
 
     try {
-        Dexter.findPokemon(capitalizeFirstLetter(args[0]), function (p) {
+        Dexter.findPokemon(capitalizeFirstLetter(arg), function (p) {
             name = p.names.en;
             moves = p.learnset;
             type = p.types;
@@ -77,7 +78,18 @@ function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 function showInGerman(p, message) {
-    embed = new Discord.RichEmbed()
+    
+    Dexter.findPokemon(capitalizeFirstLetter(arg), function (p) {
+            name = p.names.de;
+            moves = p.learnset;
+            type = p.types;
+            abilities = p.abilities;
+            let parsedAbilities;
+            for (i in abilities) {
+                let object = abilities[i];
+                parsedAbilities = object.name;
+            } 
+            embed = new Discord.RichEmbed()
         .setTitle(`Information für ${p.names.de}:`)
         .setDescription("Hinweis: Diese Information ist nur bis Gen 6 korrekt (Pokemon X / Y).")
         .addField(`Art`, type)
