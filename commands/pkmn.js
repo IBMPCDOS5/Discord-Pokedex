@@ -102,6 +102,7 @@ function showInGerman(p, message) {
         .setFooter(`${config.name} v${config.version}`)
         .setTimestamp()
     message.channel.send({ embed });
+    })
 }
 }
 module.exports.help = {
